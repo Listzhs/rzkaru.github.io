@@ -3,41 +3,51 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>you are an idiot</title>
+<title>idiot prank</title>
 <style>
-body{margin:0;background:#ffcc00;display:flex;justify-content:center;align-items:center;height:100vh;overflow:hidden;font-family:sans-serif;cursor:pointer;}
-.idiot{position:absolute;font-size:3em;font-weight:bold;color:#ff0000;animation:pop 1s ease forwards;}
-@keyframes pop{
-  0%{transform:scale(0);opacity:0;}
-  50%{transform:scale(1.5);opacity:1;}
-  100%{transform:scale(1);opacity:1;}
-}
+body{margin:0;background:#222;overflow:hidden;cursor:pointer;}
+.emoji{position:absolute;width:80px;height:80px;user-select:none;pointer-events:none;transition:transform 0.3s;}
 </style>
 </head>
 <body>
+
+<audio id="sound" src="https://www.soundjay.com/button/beep-07.mp3" preload="auto"></audio>
+
 <script>
-const colors=['#ff0000','#00ff00','#0000ff','#ff00ff','#00ffff','#fff000'];
-function spawnText(x,y){
-  const span=document.createElement('div');
-  span.className='idiot';
-  span.textContent='you are an idiot';
-  span.style.left=x+'px';
-  span.style.top=y+'px';
-  span.style.color=colors[Math.floor(Math.random()*colors.length)];
-  document.body.appendChild(span);
-  setTimeout(()=>span.remove(),1500);
+// daftar emoji / gambar lucu (gantikan dengan emoji png)
+const emojis=[
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Emoji_u1F92A.svg/1024px-Emoji_u1F92A.svg.png', // face with raised eyebrow
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Emoji_u1F92B.svg/1024px-Emoji_u1F92B.svg.png', // face with symbols
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Emoji_u1F4A9.svg/1024px-Emoji_u1F4A9.svg.png' // poop emoji
+];
+
+const sound=document.getElementById('sound');
+
+function spawnEmoji(x,y){
+  const img=document.createElement('img');
+  img.src=emojis[Math.floor(Math.random()*emojis.length)];
+  img.className='emoji';
+  img.style.left=x+'px';
+  img.style.top=y+'px';
+  img.style.transform=`rotate(${Math.random()*360}deg) scale(${0.8+Math.random()*0.4})`;
+  document.body.appendChild(img);
+  // mainin suara keras
+  sound.currentTime=0;
+  sound.volume=0.6;
+  sound.play();
+  setTimeout(()=>img.remove(),2000);
 }
 
-// spawn random every 1-2 detik
+// spawn acak tiap 1–1,5 detik
 setInterval(()=>{
-  const x=Math.random()*window.innerWidth*0.8;
-  const y=Math.random()*window.innerHeight*0.8;
-  spawnText(x,y);
-},1200);
+  const x=Math.random()*(window.innerWidth-80);
+  const y=Math.random()*(window.innerHeight-80);
+  spawnEmoji(x,y);
+},1200+Math.random()*300);
 
-// spawn on click juga
+// klik juga spawn
 document.body.addEventListener('click',e=>{
-  spawnText(e.clientX,e.clientY);
+  spawnEmoji(e.clientX-40,e.clientY-40);
 });
 </script>
 </body>
