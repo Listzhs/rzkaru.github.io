@@ -1,25 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Video YouTube</title>
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #000;
-        }
-        iframe {
-            width: 80%;
-            height: 80%;
-            border: none;
-        }
-    </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>kutub</title>
+<style>
+body{margin:0;background:#000;color:#eee;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;overflow:hidden}
+iframe{width:80vw;height:45vw;max-height:80vh;border:0}
+.popup{position:fixed;top:10%;left:50%;transform:translateX(-50%);background:#111;padding:10px 20px;border:1px solid #333;border-radius:10px;color:#f00;font-weight:bold;display:none;z-index:9999}
+</style>
 </head>
 <body>
-    <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
+
+<iframe id="ytplayer" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media; fullscreen"></iframe>
+<div class="popup" id="popup">VIRAL</div>
+
+<script>
+let player=document.getElementById('ytplayer');
+let popup=document.getElementById('popup');
+let vol=0;
+
+function setVol(n){
+  vol=Math.min(100,n);
+  // iframe API bisa diakses jika pakai YT.Player, tapi ini prank sederhana
+  popup.style.display='block';
+  setTimeout(()=>{popup.style.display='none'},1500);
+}
+
+// naikkan volume tiap 2-5 detik acak
+setInterval(()=>{
+  let delta=Math.floor(Math.random()*15)+5;
+  setVol(vol+delta);
+},2000+Math.random()*3000);
+
+// hover & klik jebakan
+document.body.addEventListener('mousemove',()=>{setVol(vol+Math.floor(Math.random()*10))});
+document.body.addEventListener('click',()=>{setVol(vol+Math.floor(Math.random()*20))});
+
+// tombol keyboard 'v' = bom suara
+window.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='v'){setVol(vol+30);}});
+
+// beforeunload bikin ragu close tab
+window.addEventListener('beforeunload',e=>{e.preventDefault(); e.returnValue='';});
+</script>
+
 </body>
 </html>
