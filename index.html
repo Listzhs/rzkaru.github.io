@@ -3,46 +3,42 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>kutub</title>
+<title>you are an idiot</title>
 <style>
-body{margin:0;background:#000;color:#eee;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;overflow:hidden}
-iframe{width:80vw;height:45vw;max-height:80vh;border:0}
-.popup{position:fixed;top:10%;left:50%;transform:translateX(-50%);background:#111;padding:10px 20px;border:1px solid #333;border-radius:10px;color:#f00;font-weight:bold;display:none;z-index:9999}
+body{margin:0;background:#ffcc00;display:flex;justify-content:center;align-items:center;height:100vh;overflow:hidden;font-family:sans-serif;cursor:pointer;}
+.idiot{position:absolute;font-size:3em;font-weight:bold;color:#ff0000;animation:pop 1s ease forwards;}
+@keyframes pop{
+  0%{transform:scale(0);opacity:0;}
+  50%{transform:scale(1.5);opacity:1;}
+  100%{transform:scale(1);opacity:1;}
+}
 </style>
 </head>
 <body>
-
-<iframe id="ytplayer" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media; fullscreen"></iframe>
-<div class="popup" id="popup">VIRAL</div>
-
 <script>
-let player=document.getElementById('ytplayer');
-let popup=document.getElementById('popup');
-let vol=0;
-
-function setVol(n){
-  vol=Math.min(100,n);
-  // iframe API bisa diakses jika pakai YT.Player, tapi ini prank sederhana
-  popup.style.display='block';
-  setTimeout(()=>{popup.style.display='none'},1500);
+const colors=['#ff0000','#00ff00','#0000ff','#ff00ff','#00ffff','#fff000'];
+function spawnText(x,y){
+  const span=document.createElement('div');
+  span.className='idiot';
+  span.textContent='you are an idiot';
+  span.style.left=x+'px';
+  span.style.top=y+'px';
+  span.style.color=colors[Math.floor(Math.random()*colors.length)];
+  document.body.appendChild(span);
+  setTimeout(()=>span.remove(),1500);
 }
 
-// naikkan volume tiap 2-5 detik acak
+// spawn random every 1-2 detik
 setInterval(()=>{
-  let delta=Math.floor(Math.random()*15)+5;
-  setVol(vol+delta);
-},2000+Math.random()*3000);
+  const x=Math.random()*window.innerWidth*0.8;
+  const y=Math.random()*window.innerHeight*0.8;
+  spawnText(x,y);
+},1200);
 
-// hover & klik jebakan
-document.body.addEventListener('mousemove',()=>{setVol(vol+Math.floor(Math.random()*10))});
-document.body.addEventListener('click',()=>{setVol(vol+Math.floor(Math.random()*20))});
-
-// tombol keyboard 'v' = bom suara
-window.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='v'){setVol(vol+30);}});
-
-// beforeunload bikin ragu close tab
-window.addEventListener('beforeunload',e=>{e.preventDefault(); e.returnValue='';});
+// spawn on click juga
+document.body.addEventListener('click',e=>{
+  spawnText(e.clientX,e.clientY);
+});
 </script>
-
 </body>
 </html>
